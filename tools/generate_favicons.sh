@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Please exevute me from the img folder to regenerate the favicons.
+# Please execute me from the img folder to regenerate the favicons.
 #
 
 re="^.*-([0-9]+)x([0-9]+).*$";
