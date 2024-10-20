@@ -1,9 +1,9 @@
 * {
   font-family: 'Roboto', sans-serif;
   font-weight: 300;
-  line-height: 1.4;
+  line-height: 1.5;
   color: #000;
-  font-size: 18px;
+  font-size: 1.1em;
 }
 
 
@@ -28,7 +28,6 @@ nav {
 .nav-item {
   padding: 0 .5rem 0 .5rem;
   text-transform: uppercase;
-  font-size: 0.72rem /*13px*/;
 }
 
 .fade-in {
@@ -113,14 +112,13 @@ span {
 }
 
 h6 {
-  font-size: 1.33rem /*24px*/ !important;
-  font-weight: 100 !important;
+  font-size: 1.33rem !important;
+  font-weight: 300 !important;
   margin-top: 10px !important;
   margin-bottom: 10px !important;
 }
 
 p {
-  font-size: 0.83rem /*15px*/;
   line-height: 23px;
   font-weight: 300;
 }
@@ -194,7 +192,7 @@ footer {
 
 .footer li, .footer p {
   font-weight: 100;
-  font-size: 0.78rem /*14px*/ !important;
+  font-size: 0.89em;
 }
 
 .social-links li {
