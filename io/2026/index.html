@@ -3,211 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Buzzword Bingo</title>
-    <style>
-        :root {
-            --bg-color: #f4f7f6;
-            --cell-bg: #ffffff;
-            --cell-border: #dfe6e9;
-            --cell-active: #74b9ff;
-            --text-color: #2d3436;
-            --bingo-color: #6c5ce7;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            margin: 0;
-        }
-
-        h1 { margin-bottom: 20px; }
-
-        .bingo-grid {
-            display: grid;
-            grid-template-columns: repeat(5, 1fr);
-            grid-template-rows: repeat(5, 1fr);
-            gap: 10px;
-            width: 90vw;
-            max-width: 600px;
-            aspect-ratio: 1 / 1;
-        }
-
-        .cell {
-            background-color: var(--cell-bg);
-            border: 2px solid var(--cell-border);
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 10px;
-            font-weight: bold;
-            font-size: 0.9rem;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            user-select: none;
-            overflow-wrap: break-word;
-        }
-
-        .cell:hover {
-            transform: scale(1.02);
-            border-color: var(--cell-active);
-        }
-
-        .cell.active {
-            background-color: var(--cell-active);
-            color: white;
-            border-color: #0984e3;
-        }
-
-        .cell.free-space {
-            background-color: #ffeaa7;
-            border-color: #fdcb6e;
-        }
-
-        /* Modal Styles */
-        #bingo-modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7);
-            justify-content: center;
-            align-items: center;
-            z-index: 100;
-        }
-
-        .modal-content {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        @keyframes pop {
-            from { transform: scale(0); }
-            to { transform: scale(1); }
-        }
-
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background: var(--bingo-color);
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 1rem;
-        }
-    </style>
+    <title>Google IO Extended - Buzzword Bingo</title>
+    <link rel="stylesheet" href="buzz.css">
 </head>
 <body>
+    <h1>Google IO Extended Buzzword Bingo</h1>
+    <tt id="debug"/>
 
-    <h1>Buzzword Bingo</h1>
     <div class="bingo-grid" id="grid"></div>
 
     <div id="bingo-modal">
         <div class="modal-content">
             <h2 style="font-size: 3rem; color: #6c5ce7; margin: 0;">BINGO!</h2>
-            <p>You've cleared a line!</p>
-            <button onclick="closeModal()">Keep Playing</button>
+            <p>You've have a BINGO!</p>
+	    <ul>
+		<li>🏆Shout 'BINGO'🏆</li>
+		<li>Go to the organizers</li>
+		<li>Show this page and</li>
+		<li>Get your prize (limited supply)</li>
+	    </ul>
+	    </p>
+            <button onclick="closeModal()">Play Again</button>
         </div>
     </div>
 
-    <script>
-        // In a real GitHub Pages setup, you would use:
-        // fetch('buzzwords.txt').then(res => res.text()).then(data => ...)
-        
-        // Mock data for demonstration - Replace this with your file logic
-        const defaultBuzzwords = [
-            "Synergy", "Cloud-Native", "Disruptive", "Deep Dive", "Low-Hanging Fruit",
-            "Blockchain", "Web3", "Metaverse", "Scalability", "Agile",
-            "Pivot", "Big Data", "Leverage", "Value Add", "Ecosystem",
-            "Game Changer", "Bandwidth", "Hard Stop", "New Normal", "Paradigm Shift",
-            "Hyper-local", "Next Gen", "Full-stack", "Iterate", "Unpack"
-        ];
-
-        const gridElement = document.getElementById('grid');
-        const modal = document.getElementById('bingo-modal');
-        let cells = [];
-
-        function initBingo() {
-            // Shuffle buzzwords
-            const shuffled = [...defaultBuzzwords].sort(() => 0.5 - Math.random());
-            
-            for (let i = 0; i < 25; i++) {
-                const cell = document.createElement('div');
-                cell.classList.add('cell');
-                
-                // Handle Center Field (index 12 is the middle of 0-24)
-                if (i === 12) {
-                    cell.innerText = "AI";
-                    cell.classList.add('active', 'free-space');
-                } else {
-                    // Pull from list (skipping one for the center)
-                    cell.innerText = shuffled[i > 12 ? i - 1 : i];
-                    cell.addEventListener('click', () => toggleCell(i));
-                }
-                
-                gridElement.appendChild(cell);
-                cells.push(cell);
-            }
-        }
-
-        function toggleCell(index) {
-            cells[index].classList.toggle('active');
-            checkBingo();
-        }
-
-        function checkBingo() {
-            const size = 5;
-            let hasBingo = false;
-
-            // Check Rows
-            for (let i = 0; i < size; i++) {
-                let row = true;
-                for (let j = 0; j < size; j++) {
-                    if (!cells[i * size + j].classList.contains('active')) row = false;
-                }
-                if (row) hasBingo = true;
-            }
-
-            // Check Columns
-            for (let i = 0; i < size; i++) {
-                let col = true;
-                for (let j = 0; j < size; j++) {
-                    if (!cells[j * size + i].classList.contains('active')) col = false;
-                }
-                if (col) hasBingo = true;
-            }
-
-            if (hasBingo) {
-                modal.style.display = 'flex';
-            }
-        }
-
-        function closeModal() {
-            modal.style.display = 'none';
-        }
-
-        // To load from an external file 'buzzwords.txt' (uncomment below for production):
-        /*
-        fetch('buzzwords.txt')
-            .then(response => response.text())
-            .then(text => {
-                const lines = text.split('\n').filter(line => line.trim() !== "");
-                // update defaultBuzzwords and call initBingo()
-            });
-        */
-
-        initBingo();
-    </script>
+    <script src="bingo.js"></script>
 </body>
 </html>

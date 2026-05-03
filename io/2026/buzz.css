@@ -1,0 +1,116 @@
+:root {
+	--bg-color: #f4f7f6;
+        --cell-bg: #ffffff;
+        --cell-border: #dfe6e9;
+	--cell-active: #74b9ff;
+        --text-color: #2d3436;
+        --bingo-color: #6c5ce7;
+}
+
+body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        margin: 0;
+}
+
+h1 { 
+	margin-bottom: 20px; 
+}
+
+.bingo-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        grid-template-rows: repeat(5, 1fr);
+        gap: 10px;
+        width: 90vw;
+        max-width: 600px;
+        aspect-ratio: 1/1;
+}
+
+.cell {
+        background-color: var(--cell-bg);
+        border: 2px solid var(--cell-border);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+        overflow-wrap: break-word;
+}
+
+.cell:hover {
+        transform: scale(1.02);
+        border-color: var(--cell-active);
+}
+
+.cell.active {
+        background-color: var(--cell-active);
+        color: white;
+        border-color: #0984e3;
+}
+
+.cell.free-space {
+        background-color: #ffeaa7;
+        border-color: #fdcb6e;
+}
+
+#bingo-modal {
+        display: none;
+        position: fixed;
+        top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+        background: rgba(0, 0, 0, 0.7);
+        justify-content: center;
+        align-items: center;
+        z-index: 100;
+}
+
+.modal-content {
+        background: white;
+        padding: 40px;
+        border-radius: 20px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        animation: pop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes pop {
+        from {
+        	transform: scale(0);
+        }
+        to {
+                transform: scale(1);
+        }
+}
+
+button {
+        background-color: var(--cell-bg);
+        border: 2px solid var(--cell-border);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 10px;
+        font-weight: bold;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        user-select: none;
+        overflow-wrap: break-word;
+}
+
