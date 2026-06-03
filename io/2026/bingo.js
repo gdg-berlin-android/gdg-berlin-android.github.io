@@ -101,6 +101,54 @@ try {
     location.reload()
   }
 
+  // --- Speech Recognition Integration ---
+  const voiceBtn = document.getElementById('voiceBtn');
+  if (typeof BingoSpeechManager !== 'undefined') {
+    try {
+      let speechManager = new BingoSpeechManager({
+        voiceBtn: voiceBtn,
+        getWords: () => {
+          return cells.map((cell, index) => ({
+            word: cell.innerText.toLowerCase().trim(),
+            cell: cell,
+            index: index
+          }));
+        },
+        onMatch: (transcript, word, cell, index) => {
+          if (index === 12) return; // Skip AI free field
+          if (!cell.classList.contains('active')) {
+            cell.classList.add('active');
+            checkBingo();
+          }
+        },
+        onStatusChange: (listening) => {
+          if (listening) {
+            voiceBtn.textContent = '⏹️ Stop Listening';
+            voiceBtn.style.backgroundColor = '#e74c3c';
+          } else {
+            voiceBtn.textContent = '🎤 Start Listening';
+            voiceBtn.style.backgroundColor = '#6c5ce7';
+          }
+        }
+      });
+      if (voiceBtn) {
+        voiceBtn.style.display = '';
+        bingoBotLink.style.display = '';
+      }
+    } catch (e) {
+      console.warn("BingoSpeechManager instantiation failed:", e);
+      if (voiceBtn) {
+        voiceBtn.style.display = 'none';
+        bingoBotLink.style.display = 'none';
+      }
+    }
+  } else {
+    if (voiceBtn) {
+      voiceBtn.style.display = 'none';
+      bingoBotLink.style.display = 'none';
+    }
+  }
+
   fetch('buzzwords')
     .then(res => res.text())
     .then(data => wordsLoaded(data))
